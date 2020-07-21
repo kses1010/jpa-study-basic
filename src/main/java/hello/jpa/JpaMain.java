@@ -13,13 +13,9 @@ public class JpaMain {
         tx.begin();
         // code
         try {
-            // 비영속
-            Member member1 = new Member(1L, "a");
-            Member member2 = new Member(2L, "b");
 
-            // 영속
-            em.persist(member1);
-            em.persist(member2);
+            Member member = em.find(Member.class, 1L);
+            member.setName("def");
 
             tx.commit();
 
