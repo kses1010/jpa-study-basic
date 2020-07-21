@@ -14,8 +14,12 @@ public class JpaMain {
         // code
         try {
 
-            Member member = em.find(Member.class, 1L);
-            member.setName("def");
+            Member member = new Member(3L, "hello3");
+            em.persist(member);
+
+            em.flush(); // DB에 바로 SQL이 날라간다.
+
+            System.out.println("==================");
 
             tx.commit();
 
