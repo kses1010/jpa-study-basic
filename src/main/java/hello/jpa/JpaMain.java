@@ -14,14 +14,13 @@ public class JpaMain {
         tx.begin();
         // code
         try {
-            List<Member> result = em.createQuery("select m from Member m", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
-                    .getResultList();
+            // 비영속
+            Member member = new Member();
+            member.setId(1L);
+            member.setName("Hello Jpa");
 
-            for (Member member : result) {
-                System.out.println(member.getName());
-            }
+            // 영속
+            em.persist(member);
 
             tx.commit();
 
