@@ -41,5 +41,6 @@ hs_err_pid*
 .idea/compiler.xml
 .idea/jarRepositories.xml
 .idea/misc.xml
+.idea/vcs.xml
 jpa-study-basic.iml
 pom.xml
