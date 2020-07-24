@@ -14,25 +14,17 @@ public class JpaMain {
         // code
         try {
 
-            // 저장
             Team team = new Team();
             team.setTeamName("TeamA");
             em.persist(team);
 
             Member member = new Member();
             member.setName("member1");
-            member.setTeam(team);
+
+            team.getMembers().add(member);
+            member.changeTeam(team);
+
             em.persist(member);
-
-            // 1차 캐시에서 보지말고 DB에서 확인.
-            em.flush();
-            em.clear();
-
-            // 조회
-            Member findMember = em.find(Member.class, member.getId());
-
-            Team findTeam = findMember.getTeam();
-            System.out.println("##############" + findTeam.getTeamName());
 
             tx.commit();
 

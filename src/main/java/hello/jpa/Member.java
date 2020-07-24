@@ -10,13 +10,12 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "team_id")
-    private Team team;
-
     @Column(name = "username")
     private String name;
 
+    @ManyToOne()
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     public Member() {}
 
@@ -40,7 +39,8 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    public void changeTeam(Team team) {
         this.team = team;
+        team.getMembers().add(this);
     }
 }
