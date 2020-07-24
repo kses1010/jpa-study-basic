@@ -14,12 +14,14 @@ public class JpaMain {
         // code
         try {
 
-            Member member = new Member(3L, "hello3");
+            Team team = new Team();
+            team.setTeamName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setTeamId(team.getId());
             em.persist(member);
-
-            em.flush(); // DB에 바로 SQL이 날라간다.
-
-            System.out.println("==================");
 
             tx.commit();
 
