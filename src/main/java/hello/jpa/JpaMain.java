@@ -14,17 +14,18 @@ public class JpaMain {
         // code
         try {
 
-            Team team = new Team();
-            team.setTeamName("TeamA");
-            em.persist(team);
-
             Member member = new Member();
             member.setName("member1");
 
-            team.getMembers().add(member);
-            member.changeTeam(team);
-
             em.persist(member);
+
+            Team team = new Team();
+            team.setTeamName("TeamA");
+
+            //
+            team.getMembers().add(member);
+
+            em.persist(team);
 
             tx.commit();
 
