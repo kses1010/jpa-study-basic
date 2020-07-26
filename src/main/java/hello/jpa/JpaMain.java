@@ -11,8 +11,23 @@ public class JpaMain {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        // code
+        // coder
         try {
+
+            Movie movie = new Movie();
+            movie.setDirector("A");
+            movie.setActor("BBB");
+            movie.setName("헬로월드");
+            movie.setPrice(10000);
+
+            em.persist(movie);
+
+            em.flush();
+            em.clear();
+
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("###########: " +findMovie);
+
 
             tx.commit();
 
