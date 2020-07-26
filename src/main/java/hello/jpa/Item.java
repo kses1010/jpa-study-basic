@@ -3,8 +3,9 @@ package hello.jpa;
 import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn
-public class Item {
+public abstract class Item {
 
     @Id
     @GeneratedValue
