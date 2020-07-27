@@ -14,21 +14,24 @@ public class JpaMain {
         tx.begin();
         // coder
         try {
+            Team team = new Team();
+            team.setTeamName("A");
+            em.persist(team);
 
             Member member = new Member();
             member.setName("abc");
+            member.setTeam(team);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            Member m1 = em.getReference(Member.class, member.getId());
-            System.out.println("m1 : " +m1.getClass());
-
             Member findM1 = em.find(Member.class, member.getId());
-            System.out.println("m2 : " + findM1.getClass());
+            System.out.println(findM1.getTeam().getClass());
 
-            System.out.println("m1 == findByProxy " + (m1 == findM1));
+            System.out.println("==========================");
+            System.out.println(findM1.getTeam());
+            System.out.println("==========================");
 
             tx.commit();
 
