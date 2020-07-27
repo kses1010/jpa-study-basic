@@ -16,11 +16,19 @@ public class JpaMain {
         try {
 
             Member member = new Member();
-            member.setName("user");
-            member.setCreatedBy("son");
-            member.setCreatedDate(LocalDateTime.now());
-
+            member.setName("abc");
             em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            Member m1 = em.getReference(Member.class, member.getId());
+            System.out.println("m1 : " +m1.getClass());
+
+            Member findM1 = em.find(Member.class, member.getId());
+            System.out.println("m2 : " + findM1.getClass());
+
+            System.out.println("m1 == findByProxy " + (m1 == findM1));
 
             tx.commit();
 
