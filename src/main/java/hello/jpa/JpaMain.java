@@ -1,6 +1,7 @@
 package hello.jpa;
 
 import hello.jpa.domain.Member;
+import hello.jpa.domain.MemberType;
 import hello.jpa.domain.Team;
 
 import javax.persistence.EntityManager;
@@ -25,18 +26,24 @@ public class JpaMain {
             member.setUsername("member");
             member.setAge(10);
             member.changeTeam(team);
+            member.setType(MemberType.ADMIN);
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            String query = "SELECT m FROM Member m LEFT JOIN m.team t on t.name = 'A'";
+            String query = "SELECT m.username, 'HELLO', true FROM Member m " +
+                    "where m.type = :userType";
 
-            List<Member> result = em.createQuery(
-                    query, Member.class)
+            List<Object[]> resultList = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
                     .getResultList();
 
-            System.out.println(result.size());
+            for (Object[] objects : resultList) {
+                System.out.println(objects[0]);
+                System.out.println(objects[1]);
+                System.out.println(objects[2]);
+            }
 
             tx.commit();
 

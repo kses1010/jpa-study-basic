@@ -2,6 +2,7 @@ package hello.jpa.domain;
 
 import javax.persistence.*;
 
+import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
 @Entity
@@ -17,6 +18,9 @@ public class Member {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
+
+    @Enumerated(STRING)
+    private MemberType type;
 
     public void changeTeam(Team team) {
         this.team = team;
@@ -53,6 +57,14 @@ public class Member {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
     }
 
     @Override
