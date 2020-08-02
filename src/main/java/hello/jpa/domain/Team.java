@@ -1,9 +1,14 @@
-package hello.jpa;
+package hello.jpa.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class Child {
+public class Team {
 
     @Id
     @GeneratedValue
@@ -11,17 +16,8 @@ public class Child {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Parent parent;
-
-    public Parent getParent() {
-        return parent;
-    }
-
-    public void setParent(Parent parent) {
-        this.parent = parent;
-    }
+    @OneToMany(mappedBy = "team")
+    private List<Member> members = new ArrayList<>();
 
     public Long getId() {
         return id;
