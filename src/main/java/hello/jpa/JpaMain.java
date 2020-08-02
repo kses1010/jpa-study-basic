@@ -1,10 +1,12 @@
 package hello.jpa;
 
 import hello.jpa.domain.Member;
-import hello.jpa.dto.MemberDto;
+import hello.jpa.domain.Team;
 
-import javax.persistence.*;
-import java.awt.print.Pageable;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
@@ -15,27 +17,26 @@ public class JpaMain {
         tx.begin();
         // code
         try {
-            for (int i = 0; i < 100; i++) {
-                Member member = new Member();
-                member.setUsername("member" + i);
-                member.setAge(i);
-                em.persist(member);
-            }
+            Team team = new Team();
+            team.setName("A");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member");
+            member.setAge(10);
+            member.changeTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
+            String query = "SELECT m FROM Member m LEFT JOIN m.team t on t.name = 'A'";
+
             List<Member> result = em.createQuery(
-                    "select m from Member m order by m.age desc", Member.class)
-                    .setFirstResult(1)
-                    .setMaxResults(20)
+                    query, Member.class)
                     .getResultList();
 
             System.out.println(result.size());
-
-            for (Member m : result) {
-                System.out.println("member : " + m);
-            }
 
             tx.commit();
 
