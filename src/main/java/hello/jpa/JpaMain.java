@@ -4,6 +4,7 @@ import hello.jpa.domain.Member;
 import hello.jpa.dto.MemberDto;
 
 import javax.persistence.*;
+import java.awt.print.Pageable;
 import java.util.List;
 
 public class JpaMain {
@@ -14,21 +15,27 @@ public class JpaMain {
         tx.begin();
         // code
         try {
+            for (int i = 0; i < 100; i++) {
+                Member member = new Member();
+                member.setUsername("member" + i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setAge(10);
+            em.flush();
+            em.clear();
 
-            em.persist(member);
-
-            List<MemberDto> result = em.createQuery(
-                    "select new hello.jpa.dto.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+            List<Member> result = em.createQuery(
+                    "select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(1)
+                    .setMaxResults(20)
                     .getResultList();
 
-            MemberDto memberDto = result.get(0);
+            System.out.println(result.size());
 
-            System.out.println("name : " + memberDto.getUsername());
-            System.out.println("age : " + memberDto.getAge());
+            for (Member m : result) {
+                System.out.println("member : " + m);
+            }
 
             tx.commit();
 
