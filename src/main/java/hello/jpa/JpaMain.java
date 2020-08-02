@@ -1,8 +1,10 @@
 package hello.jpa;
 
 import hello.jpa.domain.Member;
+import hello.jpa.dto.MemberDto;
 
 import javax.persistence.*;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -19,11 +21,14 @@ public class JpaMain {
 
             em.persist(member);
 
-            TypedQuery<Member> findMember = em.createQuery("select m from Member m", Member.class);
+            List<MemberDto> result = em.createQuery(
+                    "select new hello.jpa.dto.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+                    .getResultList();
 
-            Member member1 = findMember.getSingleResult();
+            MemberDto memberDto = result.get(0);
 
-
+            System.out.println("name : " + memberDto.getUsername());
+            System.out.println("age : " + memberDto.getAge());
 
             tx.commit();
 
