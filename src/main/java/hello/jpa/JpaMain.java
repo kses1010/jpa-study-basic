@@ -19,23 +19,39 @@ public class JpaMain {
         // code
         try {
 
+            Team team1 = new Team();
+            team1.setName("팀A");
+            em.persist(team1);
+
+            Team team2 = new Team();
+            team2.setName("팀B");
+            em.persist(team2);
+
             Member member1 = new Member();
-            member1.setUsername("관리자1");
+            member1.setUsername("회원1");
+            member1.setTeam(team1);
             em.persist(member1);
 
             Member member2 = new Member();
-            member2.setUsername("관리자2");
+            member2.setUsername("회원2");
+            member2.setTeam(team1);
             em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("회원3");
+            member3.setTeam(team2);
+            em.persist(member3);
 
             em.flush();
             em.clear();
 
-            String query  = "select function('group_concat', (m.username)) from Member m";
-            List<String> list = em.createQuery(query, String.class)
+            String query  = "select m from Member m join fetch m.team";
+
+            List<Member> list = em.createQuery(query, Member.class)
                     .getResultList();
 
-            for (String s : list) {
-                System.out.println("s = " + s);
+            for (Member member : list) {
+                System.out.println("Member = " + member.getUsername() + ", " + member.getTeam().getName());
             }
 
             tx.commit();
